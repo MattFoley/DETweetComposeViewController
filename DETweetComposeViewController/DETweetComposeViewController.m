@@ -172,6 +172,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
                                                         delegate:self
                                                cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                otherButtonTitles:nil] autorelease];
+    
     alertView.tag = DETweetComposeViewControllerNoAccountsAlert;
     [alertView show];
 }
@@ -1020,6 +1021,8 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
 
 - (void)tweetSucceeded:(DETweetPoster *)tweetPoster
 {
+    [self.view endEditing:YES];
+    
     CGFloat yOffset = -(self.view.bounds.size.height + CGRectGetMaxY(self.cardView.frame) + 10.0f);
     
     [UIView animateWithDuration:0.35f
@@ -1054,6 +1057,11 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
         tweet = [tweet stringByAppendingString:urlString];
     }
     
+    if ([tweet length]>110) {
+        tweet = [tweet substringToIndex:110];
+    }
+    
+    tweet = [tweet stringByAppendingString:@" Via @MapCraftApp"];
     DETweetPoster *tweetPoster = [[[DETweetPoster alloc] init] autorelease];
     tweetPoster.delegate = self;
     [tweetPoster postTweet:tweet withImages:self.images fromAccount:self.twitterAccount];
