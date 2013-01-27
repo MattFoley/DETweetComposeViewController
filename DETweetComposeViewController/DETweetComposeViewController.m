@@ -383,7 +383,7 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
                      }];    
     
     self.previousStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES]; 
+    //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
     
     [self updateFramesForOrientation:self.interfaceOrientation];
     
