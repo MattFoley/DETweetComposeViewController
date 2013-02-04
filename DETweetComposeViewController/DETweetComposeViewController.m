@@ -1118,4 +1118,9 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     [self dismissModalViewControllerAnimated:YES];
 }
 
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
+}
+
 @end
