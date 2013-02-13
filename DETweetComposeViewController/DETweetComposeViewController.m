@@ -355,16 +355,6 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
 {
     [super viewWillAppear:animated];
 
-        // Take a snapshot of the current view, and make that our background after our view animates into place.
-        // This only works if our orientation is the same as the presenting view.
-        // If they don't match, just display the gray background.
-    if (self.interfaceOrientation == self.fromViewController.interfaceOrientation) {
-        UIImage *backgroundImage = [self captureScreen];
-        self.backgroundImageView = [[[UIImageView alloc] initWithImage:backgroundImage] autorelease];
-    }
-    else {
-        self.backgroundImageView = [[[UIImageView alloc] initWithFrame:self.fromViewController.view.bounds] autorelease];
-    }
     self.backgroundImageView.autoresizingMask = UIViewAutoresizingNone;
     self.backgroundImageView.alpha = 0.0f;
     self.backgroundImageView.backgroundColor = [UIColor lightGrayColor];
