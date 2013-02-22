@@ -125,14 +125,28 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
         ACAccountType *twitterAccountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
         
         __block BOOL accessGranted = NO;
-        [accountStore requestAccessToAccountsWithType:twitterAccountType
-                                withCompletionHandler:^(BOOL granted, NSError *error) {
-                                    accessGranted = granted;
-                                    waitingForAccess = NO;
-                                }];
+        __block int waitCount = 0;
+        [accountStore accountsWithAccountType:twitterAccountType];
+        
+        if (isOS6()) {
+            [accountStore requestAccessToAccountsWithType:twitterAccountType options:nil
+                                               completion:^(BOOL granted, NSError *error) {
+                                                   accessGranted = granted;
+                                                   
+                                                   waitingForAccess = NO;
+                                               }];
+        }else{
+            [accountStore requestAccessToAccountsWithType:twitterAccountType withCompletionHandler:^(BOOL granted, NSError *error) {
+                accessGranted = granted;
+                
+                waitingForAccess = NO;
+            }];
+        }
         waitingForAccess = YES;
-        while (waitingForAccess) {
+        while (waitingForAccess && waitCount<10) {
+            waitCount++;
             sleep(1);
+            
         }
         
         return accessGranted;
@@ -1108,9 +1122,5 @@ static NSString * const DETweetLastAccountIdentifier = @"DETweetLastAccountIdent
     [self dismissModalViewControllerAnimated:YES];
 }
 
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
-    return UIInterfaceOrientationPortrait;
-}
 
 @end
